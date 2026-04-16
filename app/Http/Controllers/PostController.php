@@ -87,5 +87,11 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        if($post->user_id != request()->user()->id){
+            return response()->json("The post was not made by you, so only the author of the post can delete it",403);
+        }
+        $post->delete();
+        return response()->noContent();
     }
 }
