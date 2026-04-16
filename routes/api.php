@@ -9,9 +9,11 @@ use App\Http\Controllers\ImageGenerationController;
 
 Route::post('register-test', [RegisteredUserController::class, 'store']);
 
-Route::post('login-test', [LoginController::class, 'store']);
+Route::post('login-test', [LoginController::class, 'store'])
+->middleware('throttle:login')
+;
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:api','throttle:posts')->group(function () {
 
     Route::post('/logout-test', [LoginController::class, 'destroy']);
     Route::post('/refresh', [LoginController::class, 'refresh']);
