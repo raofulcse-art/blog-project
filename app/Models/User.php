@@ -6,6 +6,7 @@ namespace App\Models;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -54,5 +55,8 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims(){
         return[];
+    }
+    public function Posts() : HasMany{
+        return $this->hasMany(Post::class,'user_id');
     }
 }

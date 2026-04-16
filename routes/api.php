@@ -11,4 +11,10 @@ Route::post('register-test', [RegisteredUserController::class, 'store']);
 
 Route::post('login-test', [LoginController::class, 'store']);
 
-Route::post('logout-test', [LoginController::class, 'destroy']);
+Route::middleware('auth:api')->group(function () {
+
+    Route::post('/logout-test', [LoginController::class, 'destroy']);
+    Route::post('/refresh', [LoginController::class, 'refresh']);
+    Route::get('/me', [LoginController::class, 'me']);
+    Route::apiResource('posts',PostController::class);
+});

@@ -55,7 +55,27 @@ class LoginController extends Controller
         
 
     
+    } 
+    public function refresh(): JsonResponse
+{
+    try {
+        $newToken = Auth::refresh();
+
+        return response()->json([
+            'status' => 'success',
+            'authorisation' => [
+                'token' => $newToken,
+                'type' => 'bearer'
+            ]
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Token cannot be refreshed'
+        ], 401);
     }
+}
 
     /**
      * Destroy an authenticated session.
@@ -72,4 +92,11 @@ class LoginController extends Controller
             'status' => 'successfuly logged out',
         ],200);
     }
+
+    public function me(): JsonResponse
+{
+    return response()->json([
+        'user' => Auth::user()
+    ]);
+}
 }
