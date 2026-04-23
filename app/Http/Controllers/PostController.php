@@ -7,16 +7,27 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
+//use App\Services\PostServices;
+use App\Services\PostService;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $postService;
+
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
+
     public function index()
     {
         //
-        return PostResource::collection(Post::all());
+        $posts = $this->postService->getAllPosts();
+        //return PostResource::collection(Post::all());
+        return PostResource::collection($posts);
     }
 
     /**
@@ -30,7 +41,8 @@ class PostController extends Controller
         $inputvalues['body'] = strip_tags($inputvalues['body']);
         $inputvalues['user_id'] = $request->user()->id;
 
-        $post = Post::create($inputvalues);
+        //$post = Post::create($inputvalues);
+        $post = $this->postService->createPosts($inputvalues);
 
         return (new PostResource($post))
         ->response()

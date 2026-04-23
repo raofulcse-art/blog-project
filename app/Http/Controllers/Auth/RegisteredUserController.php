@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -50,9 +50,9 @@ class RegisteredUserController extends Controller
         $token = Auth::login($user);
 
         //return redirect(route('dashboard', absolute: false));
-        return response()->json([
+        return view('registered', [
             'status' => 'success',
-            'user' => new UserResource($user),
+            'user' => $user,
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer'

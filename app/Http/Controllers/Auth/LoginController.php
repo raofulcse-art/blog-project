@@ -29,13 +29,13 @@ class LoginController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): JsonResponse
+    public function store(LoginRequest $request)
     {
         $token = $request->authenticate();
 
         try{
             $user = Auth::guard('api')->user();
-            return response()->json([
+            return view('registered',[
                 'status' => 'success',
             'user' => new UserResource($user),
             'authorisation' => [
@@ -80,23 +80,29 @@ class LoginController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(): JsonResponse
+    public function destroy()
     {
+        
         Auth::guard('api')->logout();
 
         //$request->session()->invalidate();
 
         //$request->session()->regenerateToken();
-
+        /*
         return response()->json([
             'status' => 'successfuly logged out',
         ],200);
+        */
+        return view('registered');
     }
 
-    public function me(): JsonResponse
+    public function me()
 {
+    
     return response()->json([
         'user' => Auth::user()
     ]);
+    
+    
 }
 }
