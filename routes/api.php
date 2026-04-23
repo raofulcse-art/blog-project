@@ -7,11 +7,13 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ImageGenerationController;
 
-Route::post('register-test', [RegisteredUserController::class, 'store']);
+Route::middleware('api.guest')->group(function(){
+    Route::post('register-test', [RegisteredUserController::class, 'store']);
 
 Route::post('login-test', [LoginController::class, 'store'])
 ->middleware('throttle:login')
 ;
+});
 
 Route::middleware('auth:api','throttle:posts')->group(function () {
 

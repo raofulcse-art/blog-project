@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        $middleware->alias([
+        'api.guest' => \App\Http\Middleware\RejectIfAuthenticatedApi::class,
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
